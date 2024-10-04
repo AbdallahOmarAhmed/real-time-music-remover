@@ -4,7 +4,7 @@ from spleeter.separator import Separator
 import webbrowser
 import threading
 import pystray
-from PIL import Image
+from PIL import Image, ImageTk
 
 # Initialize Spleeter for real-time music removal (2 stems: vocals + music)
 separator = Separator('spleeter:2stems')
@@ -46,9 +46,13 @@ def toggle_app():
         if messagebox.askyesno("Start", "Do you want to start the app?"):
             start_app()
 
+def open_github():
+    webbrowser.open("https://github.com/abdallahOmarAhmed/real-time-music-remover")
+
+
 # Donation button functionality
 def donate():
-    webbrowser.open("https://your-donation-link.com")
+    pass
 
 # Create an icon for the system tray
 def create_tray_icon():
@@ -86,18 +90,25 @@ style.map("TButton", background=[("active", "#0056b3")])  # Change color on acti
 main_frame = ttk.Frame(root)
 main_frame.pack(expand=True, fill='both')
 
-# UI Elements
+# Status label
 status_label = ttk.Label(main_frame, text="Status: Stopped", foreground="red")  # Set initial status color to red
 status_label.pack(pady=20)
 
 # Create buttons with the same width
 button_width = 15  # Set a fixed width for all buttons
 
+# Start/Stop button
 toggle_button = ttk.Button(main_frame, text="Start/Stop", command=toggle_app, width=button_width)
 toggle_button.pack(pady=10)
 
+# Donation button
 donate_button = ttk.Button(main_frame, text="Donate", command=donate, width=button_width)
 donate_button.pack(pady=10)
+
+# GitHub logo button
+github_image = ImageTk.PhotoImage(Image.open("github.png").resize((30, 30)))
+github_button = tk.Button(root, image=github_image, command=open_github,  bg="black", bd=0, activebackground="black", highlightthickness=0,)
+github_button.place(x=260, y=10)  # Place the button at the bottom left (x=10, y=260)
 
 # Function to run app on reboot (auto-start, to be set via system methods)
 def add_to_startup():
